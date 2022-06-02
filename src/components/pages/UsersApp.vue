@@ -1,6 +1,8 @@
 <template>
+    <FormRegistration />
 
   <div class="px-4 sm:px-6 lg:px-8">
+    <div></div>
     <div class="sm:flex sm:items-center">
       <div class="sm:flex-auto">
         <h1 class="text-xl font-semibold text-gray-900">Usuários</h1>
@@ -54,6 +56,7 @@
 
 
 <script>
+import FormRegistration from "@/components/FormRegistration.vue";
 
 export default {
   name: 'UsersApp',
@@ -71,7 +74,13 @@ export default {
           { name: 'Beltrano da Silva 4', company: 'Guest Posts', email: 'beltrano.silva4@example.com', data: '2022-05-27' },
         ]
     }
+  },
+  components: {
+    FormRegistration
   }
 }
 
 </script>
+
+<style>
+</style>
