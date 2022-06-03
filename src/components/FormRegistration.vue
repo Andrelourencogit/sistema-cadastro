@@ -1,10 +1,10 @@
 
 <template lang="pug">
-.form-container
+.form-container(v-if="visible")
   Feedbackmessage(:msg='msg' v-show='msg')
   form#registration-form.bg-indigo-600(method='POST' @submit='createBurger')
     .btn-container 
-      button.btn.btn-dark.btn-close(type='button') X
+      button.btn.btn-dark.btn-close(type='button' @click.native="$emit('event-close')") X
     .input-container
       label.text-white(for='nome') Nome do cliente:
       input#nome(type='text' name='nome' v-model='nome' placeholder='Digite o nome do cliente')
@@ -18,16 +18,18 @@
       label.text-white(for='telefone') Telefone:
       input#telefone(type='text' name='telefone' v-model='telefone' placeholder='Ex: (xx) 9 xxxx-xxxx')
     .input-container
-      input.submit-btn.text-white(type='submit' value='Cadastrar')
+      input.submit-btn.text-white( @click.native="$emit('event-click')" value='Cadastrar')
 </template>
 
 <script>
 import FeedbackMessage from "@/components/FeedbackMessage.vue";
 export default {
   name: "FormRegistration",
+  props: {
+      visible: Boolean
+    },
   data() {
     return {
-      paes: null,
       carnes: null,
       opcionaisdata: null,
       nome: null,
@@ -38,7 +40,10 @@ export default {
       msg: null
     }
   },
-  // methods: {
+  methods: {
+    // addInfo() {
+    //   this.visible = false
+    // }
   //   async getIngredientes() {
   //     const req = await fetch('http://localhost:3000/ingredientes')
   //     const data = await req.json()
@@ -75,7 +80,7 @@ export default {
   // },
   // mounted () {
   //   this.getIngredientes()
-  // },
+  },
   components: {
     FeedbackMessage
   }
@@ -163,13 +168,14 @@ export default {
   }
   .submit-btn {
     background-color: #00ffff;
-    /* color:#fcba03; */
     font-weight: bold;
     border: 2px solid #00ffff;
     padding: 10px;
     font-size: 16px;
     cursor: pointer;
     transition: .5s;
+    text-align: center;
+    outline: none;
   }
   .submit-btn:hover {
     background-color: transparent;
