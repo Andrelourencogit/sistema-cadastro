@@ -18,7 +18,7 @@
       label.text-white(for='telefone') Telefone:
       input#telefone(type='text' name='telefone' v-model='telefone' placeholder='Ex: (xx) 9 xxxx-xxxx')
     .input-container
-      input.submit-btn.text-white( @click.native="$emit('event-click')" value='Cadastrar')
+      input.submit-btn.text-white( @click="setUser" value='Cadastrar')
 </template>
 
 <script>
@@ -30,44 +30,33 @@ export default {
     },
   data() {
     return {
-      carnes: null,
-      opcionaisdata: null,
-      nome: null,
-      pao: null,
-      carne: null,
-      opcionais: [],
-      status: "Solicitado",
-      msg: null
+      nome: '',
+      empresa: '',
+      email: '',
+      data: '2022-05-02',
+      msg: "Solicitado"
     }
   },
   methods: {
     // addInfo() {
     //   this.visible = false
     // }
-  //   async getIngredientes() {
-  //     const req = await fetch('http://localhost:3000/ingredientes')
-  //     const data = await req.json()
-  //     this.paes = data.paes
-  //     this.carnes = data.carnes
-  //     this.opcionaisdata = data.opcionais
-  //   },
-  //   async createBurger(e) {
-  //     e.preventDefault()
-  //     const data = {
-  //       nome: this.nome,
-  //       carne: this.carne,
-  //       pao: this.pao,
-  //       opcionais: Array.from(this.opcionais),
-  //       status: "Solicitado"
-  //     }
-  //     const dataJson = JSON.stringify(data)    
-  //     const req = await fetch("http://localhost:3000/burgers", {
-  //       method: "POST",
-  //       headers: { "Content-Type" : "application/json" },
-  //       body: dataJson
-  //     });
-  //     const res = await req.json()
-  //     this.msg = `Pedido ${res.id} realizado com sucesso!`
+
+    async setUser() {
+      const data = {
+        name: this.nome,
+        company: this.empresa,
+        email: this.email,
+        data: this.data
+      }
+      console.log('dataaaa', data)
+      const dataJson = JSON.stringify(data)    
+      await fetch("http://localhost:3000/users", {
+        method: "POST",
+        headers: { "Content-Type" : "application/json" },
+        body: dataJson
+      });
+
   //     // clear message
   //     setTimeout(() => this.msg = "", 3000)
   //     // limpar campos
@@ -76,7 +65,7 @@ export default {
   //     this.pao = ""
   //     this.opcionais = []
       
-  //   }
+    }
   // },
   // mounted () {
   //   this.getIngredientes()

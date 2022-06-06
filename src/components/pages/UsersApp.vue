@@ -1,5 +1,5 @@
 <template>
-    <FormRegistration :visible="visibleForm" @event-close="addInfo2" @event-click="addInfo2"/>
+    <FormRegistration :visible="visibleForm" @event-close="closeForm" @event-click="setUser"/>
 
   <div class="px-4 sm:px-6 lg:px-8">
     <div></div>
@@ -9,7 +9,7 @@
         <p class="mt-2 text-sm text-gray-700">Lista de usuários cadastros no sistema.</p>
       </div>
       <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-        <button @click="addInfo2" type="button" class="inline-flex items-center justify-center rounded-md border border-transparent 
+        <button @click="setUser" type="button" class="inline-flex items-center justify-center rounded-md border border-transparent 
         bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 
         focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">
           Novo usuário
@@ -64,26 +64,37 @@ export default {
 
     return {
       visibleForm: false,
-      users : [
-          { name: 'Fulano da Silva', company: 'E-Inov Soluções Tecnológicas', email: 'fulano.silva@example.com', data: '2022-01-05' },
-          { name: 'Fulano da Silva 2', company: 'E-Inov Soluções Tecnológicas', email: 'fulano.silva2@example.com', data: '2022-01-16' },
-          { name: 'Fulano da Silva 3', company: 'E-Inov Soluções Tecnológicas', email: 'fulano.silva3@example.com', data: '2022-01-27' },
-          { name: 'Fulano da Silva 4', company: '', email: 'fulano.silva4@example.com', data: '2022-02-09' },
-          { name: 'Beltrano da Silva', company: '', email: 'beltrano.silva@example.com', data: '2022-04-27' },
-          { name: 'Beltrano da Silva 2', company: 'Guest Posts', email: 'beltrano.silva2@example.com', data: '2022-04-29' },
-          { name: 'Beltrano da Silva 3', company: 'Guest Posts', email: 'beltrano.silva3@example.com', data: '2022-05-02' },
-          { name: 'Beltrano da Silva 4', company: 'Guest Posts', email: 'beltrano.silva4@example.com', data: '2022-05-27' },
-        ]
+      users : null
     }
   },
   components: {
     FormRegistration
   },
   methods: {
-    addInfo2() {
+    closeForm() {
+      this.visibleForm = false
+    },
+    setUser() {
+      // const data = {
+      //   name: this.nome,
+      //   company: this.carne,
+      //   email: this.email,
+      //   data: this.data
+      //   // opcionais: Array.from(this.opcionais),
+        
+      // }
       this.visibleForm = !this.visibleForm
-      }
+    },
+    async getUsers() {
+      const req = await fetch('http://localhost:3000/users')
 
+      const data = await req.json()
+
+      this.users = data
+    }
+  },
+  mounted () {
+    this.getUsers()
   }
 }
 
