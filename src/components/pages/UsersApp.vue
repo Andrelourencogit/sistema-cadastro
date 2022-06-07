@@ -1,5 +1,5 @@
 <template>
-    <FormRegistration :visible="visibleForm" @event-close="closeForm" @event-click="setUser"/>
+    <FormRegistration :visibleForm="visibleForm" @event-close="closeForm" @event-click="setUser"/>
 
   <div class="px-4 sm:px-6 lg:px-8">
     <div></div>
@@ -39,8 +39,13 @@
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ person.email }}</td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ person.data }}</td>
                   <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                    <a href="#" class="text-indigo-600 hover:text-indigo-900"
+                    <a  class="text-indigo-600 hover:text-indigo-900"
                       >Editar<span class="sr-only">, {{ person.name }}</span></a
+                    >
+                  </td>
+                  <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                    <button type='button' @click="deleteUser(person.id)" class="btn-delete-user text-indigo-600 hover:text-indigo-900"
+                      >Excluir<span class="sr-only">, {{ person.name }}</span></button
                     >
                   </td>
                 </tr>
@@ -64,6 +69,7 @@ export default {
 
     return {
       visibleForm: false,
+      visibleFeedback: false,
       users : null
     }
   },
@@ -75,14 +81,6 @@ export default {
       this.visibleForm = false
     },
     setUser() {
-      // const data = {
-      //   name: this.nome,
-      //   company: this.carne,
-      //   email: this.email,
-      //   data: this.data
-      //   // opcionais: Array.from(this.opcionais),
-        
-      // }
       this.visibleForm = !this.visibleForm
     },
     async getUsers() {
@@ -91,6 +89,13 @@ export default {
       const data = await req.json()
 
       this.users = data
+    },
+    async deleteUser(id) {
+      await fetch(`http://localhost:3000/users/${id}`, {
+        method: "DELETE"
+      });
+
+      this.getUsers()
     }
   },
   mounted () {
@@ -101,4 +106,18 @@ export default {
 </script>
 
 <style>
+
+.btn-delete-user {
+  border: 2px solid;
+  color: red;
+  padding: 5px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.btn-delete-user:hover {
+  color: #fff;
+  background-color: #c82333;
+  border-color: #bd2130;
+}
 </style>

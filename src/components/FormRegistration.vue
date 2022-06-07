@@ -1,8 +1,8 @@
 
 <template lang="pug">
-.form-container(v-if="visible")
-  Feedbackmessage(:msg='msg' v-show='msg')
-  form#registration-form.bg-indigo-600(method='POST' @submit='createBurger')
+.form-container(v-if="visibleForm")
+  form#registration-form.bg-indigo-600
+    p.feedbackUser(v-if="visibleFeedback") Cadastro realizado com sucesso!
     .btn-container 
       button.btn.btn-dark.btn-close(type='button' @click.native="$emit('event-close')") X
     .input-container
@@ -14,42 +14,43 @@
     .input-container
       label.text-white(for='email') E-mail:
       input#email(type='text' name='email' v-model='email' placeholder='Digite o e-mail')
-    .input-container
-      label.text-white(for='telefone') Telefone:
-      input#telefone(type='text' name='telefone' v-model='telefone' placeholder='Ex: (xx) 9 xxxx-xxxx')
+    //- .input-container
+    //-   label.text-white(for='telefone') Telefone:
+    //-   input#telefone(type='text' name='telefone' v-model='telefone' placeholder='Ex: (xx) 9 xxxx-xxxx')
     .input-container
       input.submit-btn.text-white( @click="setUser" value='Cadastrar')
 </template>
 
 <script>
-import FeedbackMessage from "@/components/FeedbackMessage.vue";
 export default {
   name: "FormRegistration",
   props: {
-      visible: Boolean
+      visibleForm: Boolean
+
     },
   data() {
     return {
       nome: '',
       empresa: '',
       email: '',
-      data: '2022-05-02',
-      msg: "Solicitado"
+      data: '',
+      visibleFeedback: false
     }
   },
   methods: {
-    // addInfo() {
-    //   this.visible = false
-    // }
-
+    formatDate() {
+      const timeElapsed = Date.now();
+      const today = new Date(timeElapsed);
+      let date = today.toISOString();
+      return date.substr(0, 10);
+    },
     async setUser() {
       const data = {
         name: this.nome,
         company: this.empresa,
         email: this.email,
-        data: this.data
+        data: this.formatDate()
       }
-      console.log('dataaaa', data)
       const dataJson = JSON.stringify(data)    
       await fetch("http://localhost:3000/users", {
         method: "POST",
@@ -57,22 +58,23 @@ export default {
         body: dataJson
       });
 
-  //     // clear message
-  //     setTimeout(() => this.msg = "", 3000)
-  //     // limpar campos
-  //     this.nome = ""
-  //     this.carne = ""
-  //     this.pao = ""
-  //     this.opcionais = []
+      this.visibleFeedback = true
+
+      setTimeout(() => this.visibleFeedback = false, 2000)
+
+      // limpar campos
+      this.nome = ''
+      this.empresa = ''
+      this.email = ''
+      this.data = ''
+      
+      setTimeout(() => document.location.reload(true), 3000)
       
     }
-  // },
+  }
   // mounted () {
   //   this.getIngredientes()
-  },
-  components: {
-    FeedbackMessage
-  }
+  // }
 }
 </script>
 
@@ -85,6 +87,16 @@ export default {
     overflow-y: auto;
     pointer-events: initial;
     background-color: rgba(9,30,66,0.54);
+  }
+  .feedbackUser {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
   }
 
   .btn-container {
