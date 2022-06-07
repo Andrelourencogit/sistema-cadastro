@@ -2,30 +2,51 @@
 <template lang="pug">
 .form-container(v-if="visibleForm")
   form#registration-form.bg-indigo-600
-    p.feedbackUser(v-if="visibleFeedback") Cadastro realizado com sucesso!
-    .btn-container 
-      button.btn.btn-dark.btn-close(type='button' @click.native="$emit('event-close')") X
-    .input-container
-      label.text-white(for='nome') Nome do cliente:
-      input#nome(type='text' name='nome' v-model='nome' placeholder='Digite o nome do cliente')
-    .input-container
-      label.text-white(for='empresa') Nome da empresa:
-      input#empresa(type='text' name='empresa' v-model='empresa' placeholder='Digite o nome da empresa')
-    .input-container
-      label.text-white(for='email') E-mail:
-      input#email(type='text' name='email' v-model='email' placeholder='Digite o e-mail')
-    //- .input-container
-    //-   label.text-white(for='telefone') Telefone:
-    //-   input#telefone(type='text' name='telefone' v-model='telefone' placeholder='Ex: (xx) 9 xxxx-xxxx')
-    .input-container
-      input.submit-btn.text-white( @click="setUser" value='Cadastrar')
+    template(v-if="isInfoLocal")
+      p.feedbackUser(v-if="visibleFeedback") Cadastro realizado com sucesso!
+      .btn-container 
+        button.btn.btn-dark.btn-close(type='button' @click.native="$emit('event-close')") X
+      .input-container
+        label.text-white(for='nome') Nome do cliente:
+        input#nome(type='text' name='nome' v-model='nome' placeholder='Digite o nome do cliente')
+      .input-container
+        label.text-white(for='empresa') Nome da empresa:
+        input#empresa(type='text' name='empresa' v-model='empresa' placeholder='Digite o nome da empresa')
+      .input-container
+        label.text-white(for='email') E-mail:
+        input#email(type='text' name='email' v-model='email' placeholder='Digite o e-mail')
+      //- .input-container
+      //-   label.text-white(for='telefone') Telefone:
+      //-   input#telefone(type='text' name='telefone' v-model='telefone' placeholder='Ex: (xx) 9 xxxx-xxxx')
+      .input-container
+        input.submit-btn.text-white( @click="setUser" value='Cadastrar')
+    template(v-else v-for="date in dataExternal")
+      p.feedbackUser(v-if="visibleFeedback") Cadastro realizado com sucesso!
+      .btn-container 
+        button.btn.btn-dark.btn-close(type='button' @click.native="$emit('event-close')") X
+      .input-container
+        label.text-white(for='nome') Nome do cliente:
+        input#nome(type='text' name='nome' v-model='date.nome' placeholder='Digite o nome do cliente')
+      .input-container
+        label.text-white(for='empresa') Nome da empresa:
+        input#empresa(type='text' name='empresa' v-model='date.empresa' placeholder='Digite o nome da empresa')
+      .input-container
+        label.text-white(for='email') E-mail:
+        input#email(type='text' name='email' v-model='date.email' placeholder='Digite o e-mail')
+      //- .input-container
+      //-   label.text-white(for='telefone') Telefone:
+      //-   input#telefone(type='text' name='telefone' v-model='telefone' placeholder='Ex: (xx) 9 xxxx-xxxx')
+      .input-container
+        input.submit-btn.text-white( @click="setUser" value='Cadastrar')
 </template>
 
 <script>
 export default {
   name: "FormRegistration",
   props: {
-      visibleForm: Boolean
+      visibleForm: Boolean,
+      isInfoLocal: Boolean,
+      dataExternal: Object
 
     },
   data() {
@@ -67,7 +88,7 @@ export default {
       this.empresa = ''
       this.email = ''
       this.data = ''
-      
+
       setTimeout(() => document.location.reload(true), 3000)
       
     }

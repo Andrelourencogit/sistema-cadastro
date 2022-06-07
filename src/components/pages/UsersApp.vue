@@ -1,5 +1,5 @@
 <template>
-    <FormRegistration :visibleForm="visibleForm" @event-close="closeForm" @event-click="setUser"/>
+    <FormRegistration :isInfoLocal="true" :visibleForm="visibleForm" @event-close="closeForm" @event-click="setUser"/>
 
   <div class="px-4 sm:px-6 lg:px-8">
     <div></div>
