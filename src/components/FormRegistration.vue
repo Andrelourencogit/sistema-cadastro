@@ -20,24 +20,24 @@
       //-   input#telefone(type='text' name='telefone' v-model='telefone' placeholder='Ex: (xx) 9 xxxx-xxxx')
       .input-container
         input.submit-btn.text-white( @click="setUser" value='Cadastrar')
-    template(v-else v-for="date in dataExternal")
+    template(v-else)
       p.feedbackUser(v-if="visibleFeedback") Cadastro realizado com sucesso!
       .btn-container 
         button.btn.btn-dark.btn-close(type='button' @click.native="$emit('event-close')") X
       .input-container
         label.text-white(for='nome') Nome do cliente:
-        input#nome(type='text' name='nome' v-model='date.nome' placeholder='Digite o nome do cliente')
+        input#nome(type='text' name='nome' v-model='nomeExternal'  placeholder='Digite o nome do cliente')
       .input-container
         label.text-white(for='empresa') Nome da empresa:
-        input#empresa(type='text' name='empresa' v-model='date.empresa' placeholder='Digite o nome da empresa')
+        input#empresa(type='text' name='empresa' v-model='empresaExternal' placeholder='Digite o nome da empresa')
       .input-container
         label.text-white(for='email') E-mail:
-        input#email(type='text' name='email' v-model='date.email' placeholder='Digite o e-mail')
+        input#email(type='text' name='email' v-model='emailExternal' placeholder='Digite o e-mail')
       //- .input-container
       //-   label.text-white(for='telefone') Telefone:
-      //-   input#telefone(type='text' name='telefone' v-model='telefone' placeholder='Ex: (xx) 9 xxxx-xxxx')
+      //-   input#telefone(type='text' name='telefone' :value='telefone' placeholder='Ex: (xx) 9 xxxx-xxxx')
       .input-container
-        input.submit-btn.text-white( @click="setUser" value='Cadastrar')
+        input.submit-btn.text-white( @click="updateUser($event, dataExternal.id)" value='Atualizar dados')
 </template>
 
 <script>
@@ -47,6 +47,10 @@ export default {
       visibleForm: Boolean,
       isInfoLocal: Boolean,
       dataExternal: Object
+      // nomeExternal: String,
+      // empresaExternal: String,
+      // nomeExternal: String
+
 
     },
   data() {
@@ -55,7 +59,10 @@ export default {
       empresa: '',
       email: '',
       data: '',
-      visibleFeedback: false
+      visibleFeedback: false,
+      nomeExternal:  '',
+      empresaExternal:  '',
+      emailExternal:  ''
     }
   },
   methods: {
@@ -91,11 +98,51 @@ export default {
 
       setTimeout(() => document.location.reload(true), 3000)
       
+    },
+    async updateUser(event, id) {
+      console.log('event', event)
+
+      // console.log('event', event.path[2][1]._value)
+      // console.log('event', event.path[2][2]._value)
+      // console.log('event', event.path[2][3]._value)
+      console.log('event id ', id)
+      
+      
+      const dataJson = JSON.stringify({
+        name: this.nomeExternal,
+        company: this.empresaExternal,
+        email: this.emailExternal,
+        data: this.formatDate()
+      });
+
+      await fetch(`http://localhost:3000/users/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type" : "application/json" },
+        body: dataJson
+      });
+
+      this.visibleFeedback = true
+
+      setTimeout(() => this.visibleFeedback = false, 2000)
+
+      // limpar campos
+      this.nome = ''
+      this.empresa = ''
+      this.email = ''
+      this.data = ''
+
+      // setTimeout(() => document.location.reload(true), 3000)
+      
+    }
+  },
+  mounted () {
+    console.log('vvvvv', this.$props.dataExternal)
+    if(this.isInfoLocal) {
+      this.nomeExternal = this.dataExternal.name,
+      this.empresaExternal = this.dataExternal.company,
+      this.emailExternal = this.dataExternal.email
     }
   }
-  // mounted () {
-  //   this.getIngredientes()
-  // }
 }
 </script>
 

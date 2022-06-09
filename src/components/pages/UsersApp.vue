@@ -1,5 +1,5 @@
 <template>
-    <FormRegistration :isInfoLocal="true" :visibleForm="visibleForm" @event-close="closeForm" @event-click="setUser"/>
+    <FormRegistration :dataExternal="dateUser" :isInfoLocal="isInfoLocal" :visibleForm="visibleForm" @event-update="editUser(person.id)" @event-close="closeForm" @event-click="setUser"/>
 
   <div class="px-4 sm:px-6 lg:px-8">
     <div></div>
@@ -39,13 +39,14 @@
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ person.email }}</td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ person.data }}</td>
                   <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                    <a  class="text-indigo-600 hover:text-indigo-900"
-                      >Editar<span class="sr-only">, {{ person.name }}</span></a
-                    >
+                    <button @click="getUserId(person.id)" class="text-indigo-600 hover:text-indigo-900"
+                      >Editar<span class="sr-only">, {{ person.name }}</span>
+                    </button>
                   </td>
                   <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                     <button type='button' @click="deleteUser(person.id)" class="btn-delete-user text-indigo-600 hover:text-indigo-900"
-                      >Excluir<span class="sr-only">, {{ person.name }}</span></button
+                      >Excluir<span class="sr-only">, {{ person.name }}</span>
+                    </button
                     >
                   </td>
                 </tr>
@@ -69,8 +70,11 @@ export default {
 
     return {
       visibleForm: false,
-      visibleFeedback: false,
-      users : null
+      visibleFeedback: true,
+      users : null,
+      isInfoLocal: true,
+      dateUser: []
+
     }
   },
   components: {
@@ -90,13 +94,26 @@ export default {
 
       this.users = data
     },
+    async getUserId(id) {
+      const req = await fetch(`http://localhost:3000/users/${id}`)
+
+      const data = await req.json()
+
+      this.dateUser = data
+
+      this.isInfoLocal = false
+
+      this.visibleForm = true
+
+    },
     async deleteUser(id) {
       await fetch(`http://localhost:3000/users/${id}`, {
         method: "DELETE"
       });
 
       this.getUsers()
-    }
+    },
+
   },
   mounted () {
     this.getUsers()
