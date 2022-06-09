@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import Empresa from '@/services/companys'
 
 export default {
   name: 'UsersApp',
@@ -33,18 +34,10 @@ export default {
       companys : null
     }
   },
-  methods: {
-    
-    async getCompanys() {
-      const req = await fetch('http://localhost:3000/companys')
-
-      const data = await req.json()
-
-      this.companys = data
-    }
-  },
   mounted () {
-    this.getCompanys()
+    Empresa.listar().then(res => {
+      this.companys = res.data
+    })
   }
 }
 
