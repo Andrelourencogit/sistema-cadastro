@@ -21,7 +21,7 @@
       .input-container
         input.submit-btn.text-white( @click="setUser" value='Cadastrar')
     template(v-else)
-      p.feedbackUser(v-if="visibleFeedback") Cadastro realizado com sucesso!
+      p.feedbackUser(v-if="visibleFeedback") Atualização realizada com sucesso!
       .btn-container 
         button.btn.btn-dark.btn-close(type='button' @click.native="$emit('event-close')") X
       .input-container
@@ -135,8 +135,13 @@ export default {
       
     }
   },
+  created() {
+      console.log('vvvvv', this.$props.dataExternal)
+    console.log('this.isInfoLocal', this.isInfoLocal)
+    },
   mounted () {
     console.log('vvvvv', this.$props.dataExternal)
+    console.log('this.isInfoLocal', this.isInfoLocal)
     if(this.isInfoLocal) {
       this.nomeExternal = this.dataExternal.name,
       this.empresaExternal = this.dataExternal.company,
