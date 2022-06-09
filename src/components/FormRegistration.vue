@@ -100,12 +100,6 @@ export default {
       
     },
     async updateUser(event, id) {
-      console.log('event', event)
-
-      // console.log('event', event.path[2][1]._value)
-      // console.log('event', event.path[2][2]._value)
-      // console.log('event', event.path[2][3]._value)
-      console.log('event id ', id)
       
       
       const dataJson = JSON.stringify({
@@ -126,23 +120,17 @@ export default {
       setTimeout(() => this.visibleFeedback = false, 2000)
 
       // limpar campos
-      this.nome = ''
-      this.empresa = ''
-      this.email = ''
-      this.data = ''
+      this.nomeExternal = ''
+      this.empresaExternal = ''
+      this.emailExternal = ''
 
-      // setTimeout(() => document.location.reload(true), 3000)
+      setTimeout(() => document.location.reload(true), 3000)
       
     }
   },
-  created() {
-      console.log('vvvvv', this.$props.dataExternal)
-    console.log('this.isInfoLocal', this.isInfoLocal)
-    },
-  mounted () {
-    console.log('vvvvv', this.$props.dataExternal)
-    console.log('this.isInfoLocal', this.isInfoLocal)
-    if(this.isInfoLocal) {
+  watch: {
+    isInfoLocal() {
+      console.log('this.isInfoLocal')
       this.nomeExternal = this.dataExternal.name,
       this.empresaExternal = this.dataExternal.company,
       this.emailExternal = this.dataExternal.email
