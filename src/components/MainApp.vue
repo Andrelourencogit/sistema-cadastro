@@ -102,11 +102,13 @@ import {
   MenuIcon,
   UsersIcon,
   XIcon,
+  OfficeBuildingIcon
 } from '@heroicons/vue/outline'
 
 const navigation = [
   { name: 'Home', router: {name: 'home'}, icon: HomeIcon, current: true },
   { name: 'Usuários', router: {name: 'users'}, icon: UsersIcon, current: false },
+  { name: 'Empresas', router: {name: 'companys'}, icon: OfficeBuildingIcon, current: false }
 ]
 
 const sidebarOpen = ref(false)

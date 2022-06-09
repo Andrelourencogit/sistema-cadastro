@@ -15,6 +15,11 @@ const routes = [
         name: 'users', 
         component: () => import('./components/pages/UsersApp.vue') 
     },
+    { 
+        path: '/companys', 
+        name: 'companys', 
+        component: () => import('./components/pages/CompanyApp.vue') 
+    }
   ]
 
 const router = createRouter({

@@ -63,5 +63,19 @@
       "data": "2022-06-08",
       "id": 10
     }
+  ],
+  "companys": [
+    {
+      "name":  "Nome da empresa 1",
+      "numbeEmployees": 10,
+      "country": "Brasil",
+      "category": "Setor de tecnologia"
+    },
+    {
+      "name":  "Nome da empresa 2",
+      "numbeEmployees": 50,
+      "country": "Brasil",
+      "category": "Setor agrícula"
+    }
   ]
 }
