@@ -15,9 +15,9 @@
       .input-container
         label.text-white(for='email') E-mail:
         input#email(type='text' name='email' v-model='email' placeholder='Digite o e-mail')
-      //- .input-container
-      //-   label.text-white(for='telefone') Telefone:
-      //-   input#telefone(type='text' name='telefone' v-model='telefone' placeholder='Ex: (xx) 9 xxxx-xxxx')
+      .input-container
+        label.text-white(for='telefone') Telefone:
+        input#telefone(type='text' name='telefone' v-model='telefone' placeholder='Ex: (xx) 9 xxxx-xxxx')
       .input-container
         input.submit-btn.text-white( @click="setUser" value='Cadastrar')
     template(v-else)
@@ -33,11 +33,11 @@
       .input-container
         label.text-white(for='email') E-mail:
         input#email(type='text' name='email' v-model='emailExternal' placeholder='Digite o e-mail')
-      //- .input-container
-      //-   label.text-white(for='telefone') Telefone:
-      //-   input#telefone(type='text' name='telefone' :value='telefone' placeholder='Ex: (xx) 9 xxxx-xxxx')
       .input-container
-        input.submit-btn.text-white( @click="updateUser($event, dataExternal.id)" value='Atualizar dados')
+        label.text-white(for='telefone') Telefone:
+        input#telefone(type='text' name='telefone' v-model='telefoneExternal' placeholder='Ex: (xx) 9 xxxx-xxxx')
+      .input-container
+        input.submit-btn.text-white( @click="updateUser(dataExternal.id)" value='Atualizar dados')
 </template>
 
 <script>
@@ -47,11 +47,6 @@ export default {
       visibleForm: Boolean,
       isInfoLocal: Boolean,
       dataExternal: Object
-      // nomeExternal: String,
-      // empresaExternal: String,
-      // nomeExternal: String
-
-
     },
   data() {
     return {
@@ -59,10 +54,12 @@ export default {
       empresa: '',
       email: '',
       data: '',
+      telefone: '',
       visibleFeedback: false,
       nomeExternal:  '',
       empresaExternal:  '',
-      emailExternal:  ''
+      emailExternal:  '',
+      telefoneExternal: ''
     }
   },
   methods: {
@@ -72,12 +69,14 @@ export default {
       let date = today.toISOString();
       return date.substr(0, 10);
     },
+
     async setUser() {
       const data = {
         name: this.nome,
         company: this.empresa,
         email: this.email,
-        data: this.formatDate()
+        data: this.formatDate(),
+        phone: this.telefone
       }
       const dataJson = JSON.stringify(data)    
       await fetch("http://localhost:3000/users", {
@@ -95,18 +94,20 @@ export default {
       this.empresa = ''
       this.email = ''
       this.data = ''
+      this.telefone = ''
 
       setTimeout(() => document.location.reload(true), 3000)
       
     },
-    async updateUser(event, id) {
-      
+
+    async updateUser(id) {
       
       const dataJson = JSON.stringify({
         name: this.nomeExternal,
         company: this.empresaExternal,
         email: this.emailExternal,
-        data: this.formatDate()
+        data: this.formatDate(),
+        phone: this.telefoneExternal
       });
 
       await fetch(`http://localhost:3000/users/${id}`, {
@@ -123,6 +124,7 @@ export default {
       this.nomeExternal = ''
       this.empresaExternal = ''
       this.emailExternal = ''
+      this.telefoneExternal = ''
 
       setTimeout(() => document.location.reload(true), 3000)
       
@@ -130,10 +132,10 @@ export default {
   },
   watch: {
     isInfoLocal() {
-      console.log('this.isInfoLocal')
       this.nomeExternal = this.dataExternal.name,
       this.empresaExternal = this.dataExternal.company,
       this.emailExternal = this.dataExternal.email
+      this.telefoneExternal = this.dataExternal.phone
     }
   }
 }
