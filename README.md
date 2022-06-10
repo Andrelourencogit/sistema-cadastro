@@ -20,4 +20,4 @@ npm run backend
 ### executar o projeto
 npm run serve
 
-####OBS: é necessario deixar executando o backend e para o funcionamento dos dados e funcionalidades corretamente, é recomendado usar 2 terminais uma para o backend e outro para executar o projeto.
+#### OBS: é necessario deixar executando o backend e para o funcionamento dos dados e funcionalidades corretamente, é recomendado usar 2 terminais uma para o backend e outro para executar o projeto.
